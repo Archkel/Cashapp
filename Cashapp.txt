@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fake CashApp Generator Demo</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #00C244; /* CashApp green */
+        color: #fff;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container {
+        width: 95%;
+        max-width: 400px;
+        background-color: #00C244;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    h1, h2, h3 {
+        margin: 10px 0;
+    }
+    input {
+        padding: 12px;
+        margin: 8px 0;
+        border-radius: 10px;
+        border: none;
+        width: 90%;
+        font-size: 16px;
+    }
+    button {
+        padding: 12px 25px;
+        margin: 12px 0;
+        border: none;
+        border-radius: 10px;
+        background-color: #fff;
+        color: #00C244;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #e0e0e0;
+    }
+    #dashboard, #logout-btn {
+        display: none;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div id="login">
+        <h1>CashApp Login (FAKE)</h1>
+        <input type="text" id="username" placeholder="Username/Email"><br>
+        <input type="password" id="password" placeholder="Password"><br>
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div id="dashboard">
+        <h2>Welcome, <span id="user-name"></span>!</h2>
+        <h3 id="balance">Balance: $0.00</h3>
+        <input type="number" id="amount" placeholder="Amount to generate"><br>
+        <button onclick="generateMoney()">Add Money (FAKE)</button>
+    </div>
+
+    <button id="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<script>
+let fakeAccounts = {};
+
+function login() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    if(username === "" || password === "") {
+        alert("Please enter both username and password!");
+        return;
+    }
+
+    if(!fakeAccounts[username]) {
+        fakeAccounts[username] = { password: password, balance: 0 };
+    }
+
+    document.getElementById('user-name').innerText = username;
+    document.getElementById('balance').innerText = `Balance: $${fakeAccounts[username].balance.toFixed(2)}`;
+    
+    document.getElementById('login').style.display = "none";
+    document.getElementById('dashboard').style.display = "block";
+    document.getElementById('logout-btn').style.display = "block";
+}
+
+function generateMoney() {
+    const username = document.getElementById('user-name').innerText;
+    const amount = parseFloat(document.getElementById('amount').value);
+
+    if(isNaN(amount) || amount <= 0) {
+        alert("Enter a valid amount!");
+        return;
+    }
+
+    fakeAccounts[username].balance += amount;
+    document.getElementById('balance').innerText = `Balance: $${fakeAccounts[username].balance.toFixed(2)}`;
+    document.getElementById('amount').value = "";
+    alert(`$${amount} added! (FAKE)`);
+}
+
+function logout() {
+    document.getElementById('login').style.display = "block";
+    document.getElementById('dashboard').style.display = "none";
+    document.getElementById('logout-btn').style.display = "none";
+    document.getElementById('username').value = "";
+    document.getElementById('password').value = "";
+}
+</script>
+
+</body>
+</html>
